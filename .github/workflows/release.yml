@@ -22,7 +22,7 @@ jobs:
           npm ci
           npm run build
 
-      - name: Create release
+      - name: Create SyncFTP release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
