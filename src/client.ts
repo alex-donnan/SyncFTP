@@ -23,7 +23,6 @@ export default class SFTPClient {
   }
 
   async listFiles(remoteDir, fileGlob) {
-    console.log(`Listing ${remoteDir}`);
     let fileObjects;
     try {
       fileObjects = await this.client.list(remoteDir, fileGlob);
@@ -40,6 +39,7 @@ export default class SFTPClient {
           'name': file.name,
           'mtime': file.modifyTime,
           'type': file.type,
+          'size': file.size,
           'path': remoteDir
         });
         
@@ -51,6 +51,7 @@ export default class SFTPClient {
           'name': file.name,
           'mtime': file.modifyTime,
           'type': file.type,
+          'size': file.size,
           'path': remoteDir
         });
       }      
@@ -113,5 +114,17 @@ export default class SFTPClient {
       return(`Deleting failed:\n${err}`);
     }
     return `Delete success for\n${remoteFile}`;
+  }
+
+  async fileExists(remoteFile) {
+    console.log(`Checking if ${remoteFile} exists`);
+    let exists = false;
+    try {
+      exists = await this.client.exists(remoteFile);
+    } catch (err) {
+      console.error('Exists check failed:', err);
+      return(`Exists check failed:\n${err}`);
+    }
+    return exists;
   }
 }

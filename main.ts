@@ -48,18 +48,27 @@ export default class SyncFTP extends Plugin {
 					let loc_list = this.app.vault.getAllLoadedFiles();
 
 					for (const rem_file of rem_list) {
-						let match = loc_list.find(file => file.name === rem_file.name);
+						let match_index = loc_list.findIndex(file => `/${file.path}` === `${rem_file.path.replace(rem_path, '')}/${rem_file.name}`);
+						let match = loc_list[match_index];
 
 						try {
-							if (!match) {
+							if (match) {
+								if (rem_file.type === 'd' || rem_file.size === match.stat.size) {
+									loc_list.splice(match_index, 1);
+								}
+							} else if (!match) {
 								let sync = '';
 								if (rem_file.type === 'd') {
-									sync = await client.removeDir(`${rem_file.path}/${rem_file.name}`);
+									if (await client.fileExists(`${rem_file.path}/${rem_file.name}`)) {
+										sync = await client.removeDir(`${rem_file.path}/${rem_file.name}`);
+									}
 								} else {
-									sync = await client.deleteFile(`${rem_file.path}/${rem_file.name}`);
+									if (await client.fileExists(`${rem_file.path}/${rem_file.name}`)) {
+										sync = await client.deleteFile(`${rem_file.path}/${rem_file.name}`);
+									}
 								}
 
-								if (this.settings.notify) new Notice(sync);
+								if (this.settings.notify && sync !== '') new Notice(sync);
 							}
 						} catch (err) {
 							console.error(`Error deleting ${rem_file.name}: ${err}`);
@@ -69,13 +78,13 @@ export default class SyncFTP extends Plugin {
 
 					for (const loc_file of loc_list) {
 						let sync = '';
-						if (loc_file instanceof TFolder) {
+						if (loc_file instanceof TFolder && loc_file.path !== '/') {
 							sync = await client.makeDir(`${rem_path}/${loc_file.path}`);
 						} else if (loc_file instanceof TFile) {
 							sync = await client.uploadFile(`${loc_path}/${loc_file.path}`, `${rem_path}/${loc_file.path}`);
 						}
 
-						if (this.settings.notify) new Notice(sync);
+						if (this.settings.notify && sync != '') new Notice(sync);
 					}
 
 					let disconn = await client.disconnect();
@@ -107,13 +116,21 @@ export default class SyncFTP extends Plugin {
 					let loc_list = this.app.vault.getAllLoadedFiles();
 
 					for (const loc_file of loc_list) {
-						let match = rem_list.find(file => file.name === loc_file.name);
+						let match_index = rem_list.findIndex(file => `${file.path.replace(rem_path, '')}/${file.name}` === `/${loc_file.path}`);
+						let match = rem_list[match_index];
 
 						try {
-							if (!match && loc_file.path !== '/') {
+							let sync = '';
+							if (match) {
+								if (match.type === 'd' || match.size === loc_file.stat.size) {
+									rem_list.splice(match_index, 1);
+								}
+							} else if (!match && loc_file.path !== '/') {
 								await this.app.vault.trash(loc_file, true);
-								if (this.settings.notify) new Notice(`File ${loc_file.name} moved to trash.`);
+								sync = `Local file ${loc_file.name} moved to Obsidian trash.`;
 							}
+
+							if (this.settings.notify && sync !== '') new Notice(sync);
 						} catch (err) {
 							console.error(`Error moving ${loc_file.name} to trash: ${err}`);
 						}
@@ -124,14 +141,16 @@ export default class SyncFTP extends Plugin {
 						let dst_path = (rem_file.path !== rem_path) ? `${rem_file.path.replace(rem_path,'')}/`: '';
 
 						if (rem_file.type !== 'd') {
-							sync = await client.downloadFile(`${rem_file.path}/${rem_file.name}`, `${dst_path}${rem_file.name}`);
+							sync = await client.downloadFile(`${rem_file.path}/${rem_file.name}`, `${loc_path}${dst_path}${rem_file.name}`);
 						} else {
 							if (!loc_list.find(folder => folder.name === rem_file.name)) {
-								await this.app.vault.createFolder(`${dst_path}${rem_file.name}/`);
+								if (! await client.fileExists(`${dst_path}${rem_file.name}/`)) {
+									sync = await this.app.vault.createFolder(`${dst_path}${rem_file.name}/`);
+								}
 							}
 						}
 
-						if (this.settings.notify) new Notice(sync);
+						if (this.settings.notify && sync !== '') new Notice(sync);
 					};
 
 					let disconn = await client.disconnect();
