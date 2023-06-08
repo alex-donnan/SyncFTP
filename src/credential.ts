@@ -75,5 +75,15 @@ export default class CredentialTab extends PluginSettingTab {
 					this.plugin.settings.notify = value;
 					await this.plugin.saveSettings();
 				}));
+
+		new Setting(containerEl)
+			.setName('Sync on Load')
+			.setDesc('Would you like to be sync from the SFTP every time you open Obsidian.')
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.load_sync)
+				.onChange(async (value) => {
+					this.plugin.settings.load_sync = value;
+					await this.plugin.saveSettings();
+				}));
 	}
 }

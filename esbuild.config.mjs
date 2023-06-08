@@ -11,7 +11,7 @@ if you want to view the source, please visit the github repository of this plugi
 
 const prod = (process.argv[2] === "production");
 
-await esbuild.build({
+const context = await esbuild.context({
 	banner: {
 		js: banner,
 	},
@@ -20,7 +20,6 @@ await esbuild.build({
 	external: [
 		"obsidian",
 		"electron",
-		"ssh2-sftp-client",
 		"@codemirror/autocomplete",
 		"@codemirror/collab",
 		"@codemirror/commands",
@@ -33,6 +32,7 @@ await esbuild.build({
 		"@lezer/highlight",
 		"@lezer/lr",
 		...builtins],
+	loader: {'.node': 'file'},
 	format: "cjs",
 	target: "es2020",
 	logLevel: "info",
@@ -40,3 +40,10 @@ await esbuild.build({
 	treeShaking: true,
 	outfile: "main.js",
 });
+
+if (prod) {
+	await context.rebuild();
+	process.exit(0);
+} else {
+	await context.watch();
+}
