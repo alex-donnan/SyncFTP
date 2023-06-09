@@ -5,6 +5,6 @@
 	"minAppVersion": "0.15.0",
 	"description": "This app syncs files to an SFTP, with credentials in settings.",
 	"author": "Alex Donnan",
-	"authorUrl": "https://github.com/alex-donnan/syncftp",
+	"authorUrl": "https://github.com/alex-donnan/",
 	"isDesktopOnly": true
 }
