@@ -20,7 +20,7 @@
 		"esbuild": "^0.17.19",
 		"obsidian": "latest",
 		"tslib": "2.4.0",
-		"typescript": "^4.7.4"
+		"typescript": "^4.9.5"
 	},
 	"dependencies": {
 		"ssh2-sftp-client": "^8.0.0"

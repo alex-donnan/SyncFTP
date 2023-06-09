@@ -78,7 +78,7 @@ export default class CredentialTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Sync on Load')
-			.setDesc('Would you like to be sync from the SFTP every time you open Obsidian.')
+			.setDesc('Would you like to pull new changes from the SFTP every time you open Obsidian?')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.load_sync)
 				.onChange(async (value) => {
