@@ -123,7 +123,6 @@ export default class SFTPClient {
       exists = await this.client.exists(remoteFile);
     } catch (err) {
       console.error('Exists check failed:', err);
-      return(`Exists check failed:\n${err}`);
     }
     return exists;
   }

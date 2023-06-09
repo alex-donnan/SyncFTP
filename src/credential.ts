@@ -13,7 +13,6 @@ export default class CredentialTab extends PluginSettingTab {
 		const {containerEl} = this;
 
 		containerEl.empty();
-
 		containerEl.createEl('h2', {text: 'SFTP Settings'});
 
 		new Setting(containerEl)

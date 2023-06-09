@@ -3,7 +3,7 @@
 	"name": "SyncFTP",
 	"version": "1.1.0",
 	"minAppVersion": "0.15.0",
-	"description": "This app syncs files to an SFTP, with credentials in settings.",
+	"description": "This plugin syncs files to an SFTP, with credentials in settings.",
 	"author": "Alex Donnan",
 	"authorUrl": "https://github.com/alex-donnan/",
 	"isDesktopOnly": true
