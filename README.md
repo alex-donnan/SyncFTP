@@ -5,12 +5,14 @@ This Obsidian.md plugin allows users to sync files to their personal FTP server.
 This plugin depends on [ssh2-sftp-client](https://www.npmjs.com/package/ssh2-sftp-client) to allow for secure file transfer. 
 
 ### Use
+Prior to installation, create a containing folder on the SFTP for your vaults, along with a folder for each vault you would like to sync. (This will be updated in future versions.)
+
 Once installed, an additional settings tab for SyncFTP will have been added. There you will need to provide:
 - Host URL
 - Host PORT
 - Username
 - Password
-- Path to vault directory on SFTP
+- Path to vault directory on SFTP: The vault directory will be the base directory for ALL vaults. 
 - Notification toggle: Certain Notices will remain, but verbose information Notices will be disabled
 - Download on open toggle: Allows you to download work from the SFTP on open.
 
