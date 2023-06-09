@@ -2,7 +2,7 @@
 
 This Obsidian.md plugin allows users to sync files to their personal FTP server.
 
-This plugin depends on [this SSH package](https://www.npmjs.com/package/ssh2-sftp-client) to allow for secure file transfer. 
+This plugin depends on [ssh2-sftp-client](https://www.npmjs.com/package/ssh2-sftp-client) to allow for secure file transfer. 
 
 ### Use
 Once installed, an additional settings tab for SyncFTP will have been added. There you will need to provide:
