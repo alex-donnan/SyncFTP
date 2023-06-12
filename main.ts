@@ -5,6 +5,8 @@ import SFTPClient from './src/client';
 interface SyncFTPSettings {
 	url: string;
 	port: number;
+	proxy_host: string;
+	proxy_port: number;
 	username: string;
 	password: string;
 	vault_path: string;
@@ -15,6 +17,8 @@ interface SyncFTPSettings {
 const DEFAULT_SETTINGS: SyncFTPSettings = {
 	url: '',
 	port: 22,
+	proxy_host: '',
+	proxy_port: 22,
 	username: '',
 	password: '',
 	vault_path: '/obsidian/',
@@ -80,6 +84,8 @@ export default class SyncFTP extends Plugin {
 			new Notice(`Connecting to SFTP for file sync:\n${this.settings.url}:${this.settings.port}\n${this.settings.username}`);
 			try {
 				let conn = await this.client.connect({
+					proxy_host: this.settings.proxy_host,
+					proxy_port: this.settings.proxy_port,
 					host: this.settings.url,
 					port: this.settings.port,
 					username: this.settings.username,
@@ -157,6 +163,8 @@ export default class SyncFTP extends Plugin {
 			new Notice(`Connecting to SFTP for file sync:\n${this.settings.url}:${this.settings.port}\n${this.settings.username}`);
 			try {
 				let conn = await this.client.connect({
+					proxy_host: this.settings.proxy_host,
+					proxy_port: this.settings.proxy_port,
 					host: this.settings.url,
 					port: this.settings.port,
 					username: this.settings.username,

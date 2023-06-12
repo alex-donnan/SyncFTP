@@ -35,6 +35,30 @@ export default class CredentialTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				}));
 
+		containerEl.createEl('h2', {text: 'If you are not using a proxy please leave these fields empty.'});
+
+		new Setting(containerEl)
+			.setName('Proxy URL')
+			.setDesc('FTP Proxy URL')
+			.addText(text => text
+				.setValue(this.plugin.settings.proxy_url)
+				.onChange(async (value) => {
+					this.plugin.settings.proxy_url = value;
+					await this.plugin.saveSettings();
+				}));
+
+		new Setting(containerEl)
+			.setName('Proxy Port')
+			.setDesc('FTP Proxy Port')
+			.addText(text => text
+				.setValue(this.plugin.settings.proxy_port)
+				.onChange(async (value) => {
+					this.plugin.settings.proxy_port = value;
+					await this.plugin.saveSettings();
+				}));
+
+		containerEl.createEl('h2', {text: 'Credentials'});
+
 		new Setting(containerEl)
 			.setName('Username')
 			.setDesc('FTP Username')
