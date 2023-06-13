@@ -13,7 +13,7 @@ export default class SFTPClient {
         var { socks } = await SocksClient.createConnection({
           proxy: {
             host: options.proxy_host,
-            port: options.proxy_url,
+            port: options.proxy_port,
             type: 5
           },
           command: 'connect',
