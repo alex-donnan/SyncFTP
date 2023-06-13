@@ -85,9 +85,9 @@ export default class SyncFTP extends Plugin {
 			try {
 				let conn = await this.client.connect({
 					proxy_host: this.settings.proxy_host,
-					proxy_port: this.settings.proxy_port,
+					proxy_port: Number(this.settings.proxy_port),
 					host: this.settings.url,
-					port: this.settings.port,
+					port: Number(this.settings.port),
 					username: this.settings.username,
 					password: this.settings.password
 				});
@@ -164,9 +164,9 @@ export default class SyncFTP extends Plugin {
 			try {
 				let conn = await this.client.connect({
 					proxy_host: this.settings.proxy_host,
-					proxy_port: this.settings.proxy_port,
+					proxy_port: Number(this.settings.proxy_port),
 					host: this.settings.url,
-					port: this.settings.port,
+					port: Number(this.settings.port),
 					username: this.settings.username,
 					password: this.settings.password
 				});

@@ -39,17 +39,17 @@ export default class CredentialTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Proxy URL')
-			.setDesc('FTP Proxy URL')
+			.setDesc('Proxy URL')
 			.addText(text => text
-				.setValue(this.plugin.settings.proxy_url)
+				.setValue(this.plugin.settings.proxy_host)
 				.onChange(async (value) => {
-					this.plugin.settings.proxy_url = value;
+					this.plugin.settings.proxy_host = value;
 					await this.plugin.saveSettings();
 				}));
 
 		new Setting(containerEl)
 			.setName('Proxy Port')
-			.setDesc('FTP Proxy Port')
+			.setDesc('Proxy Port')
 			.addText(text => text
 				.setValue(this.plugin.settings.proxy_port)
 				.onChange(async (value) => {

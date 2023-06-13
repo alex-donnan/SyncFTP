@@ -1,5 +1,5 @@
 import Client from 'ssh2-sftp-client';
-import { SocksClients } from 'socks';
+import { SocksClient } from 'socks';
 
 export default class SFTPClient {
   constructor() {
@@ -9,22 +9,25 @@ export default class SFTPClient {
   async connect(options) {
     console.log(`Connecting to ${options.host}:${options.port}`);
     try {
-      if (options.proxy_host != '') {
-        var { socks } = await SocksClient.createConnection({
+      if (options.proxy_host !== '') {
+        let opt = {
           proxy: {
             host: options.proxy_host,
             port: options.proxy_port,
-            type: 5
+            type: 5,
           },
           command: 'connect',
           destination: {
             host: options.host,
             port: options.port
           }
-        });
+        };
+
+        var socks = await SocksClient.createConnection(opt);
 
         await this.client.connect({
           host: options.host,
+          port: options.port,
           sock: socks.socket,
           username: options.username,
           password: options.password
