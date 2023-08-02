@@ -48,8 +48,7 @@ export default class CredentialTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
-			.setName('Proxy Port')
-			.setDesc('Proxy Port')
+			.setName('Proxy port')
 			.addText(text => text
 				.setValue(this.plugin.settings.proxy_port)
 				.onChange(async (value) => {

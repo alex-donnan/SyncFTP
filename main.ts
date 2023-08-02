@@ -62,9 +62,6 @@ export default class SyncFTP extends Plugin {
 			() => { this.downloadFile(); });
 
 		this.addSettingTab(new CredentialTab(this.app, this));
-		this.registerDomEvent(document, 'click', (evt: MouseEvent) => {
-			console.log('click', evt);
-		});
 	}
 
 	async onunload() {
