@@ -1,5 +1,6 @@
 import Client from 'ssh2-sftp-client';
 import { SocksClient } from 'socks';
+import { readFileSync } from 'fs';
 
 export default class SFTPClient {
   constructor() {
@@ -9,6 +10,19 @@ export default class SFTPClient {
   async connect(options) {
     console.log(`Connecting to ${options.host}:${options.port}`);
     try {
+      let opts = {
+        host: options.host,
+        port: options.port,
+        username: options.username,
+        password: options.password
+      }
+
+      if (options.ssh_key_path !== '') {
+        opts['privateKey'] = readFileSync(options.ssh_key_path);
+        opts['passphrase'] = options.password;
+        delete opts.password;
+      }
+      
       if (options.proxy_host !== '') {
         let opt = {
           proxy: {
@@ -26,19 +40,11 @@ export default class SFTPClient {
         var socks = await SocksClient.createConnection(opt);
 
         await this.client.connect({
-          host: options.host,
-          port: options.port,
-          sock: socks.socket,
-          username: options.username,
-          password: options.password
+          ...opts,
+          sock: socks.socket
         });
       } else {
-        await this.client.connect({
-          host: options.host,
-          port: options.port,
-          username: options.username,
-          password: options.password
-        });
+        await this.client.connect(opts);
       }
     } catch (err) {
       console.log('Failed to connect:', err);

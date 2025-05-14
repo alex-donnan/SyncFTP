@@ -70,11 +70,21 @@ export default class CredentialTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Password')
-			.setDesc('FTP Password')
+			.setDesc('FTP Password or SSH Key Password if using an SSH Key')
 			.addText(text => text
 				.setValue(this.plugin.settings.password)
 				.onChange(async (value) => {
 					this.plugin.settings.password = value;
+					await this.plugin.saveSettings();
+				}));
+		
+		new Setting(containerEl)
+			.setName('SSH Key Path')
+			.setDesc('Path to SSH Key')
+			.addText(text => text
+				.setValue(this.plugin.settings.ssh_key_path)
+				.onChange(async (value) => {
+					this.plugin.settings.ssh_key_path = value;
 					await this.plugin.saveSettings();
 				}));
 

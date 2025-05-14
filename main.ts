@@ -12,6 +12,7 @@ interface SyncFTPSettings {
 	vault_path: string;
 	notify: boolean;
 	load_sync: boolean;
+	ssh_key_path: string;
 }
 
 const DEFAULT_SETTINGS: SyncFTPSettings = {
@@ -23,7 +24,8 @@ const DEFAULT_SETTINGS: SyncFTPSettings = {
 	password: '',
 	vault_path: '/obsidian/',
 	notify: false,
-	load_sync: false
+	load_sync: false,
+	ssh_key_path: ''
 }
 
 export default class SyncFTP extends Plugin {
@@ -86,7 +88,8 @@ export default class SyncFTP extends Plugin {
 					host: this.settings.url,
 					port: Number(this.settings.port),
 					username: this.settings.username,
-					password: this.settings.password
+					password: this.settings.password,
+					ssh_key_path: this.settings.ssh_key_path
 				});
 
 				if (this.settings.notify) new Notice(conn);
@@ -165,7 +168,8 @@ export default class SyncFTP extends Plugin {
 					host: this.settings.url,
 					port: Number(this.settings.port),
 					username: this.settings.username,
-					password: this.settings.password
+					password: this.settings.password,
+					ssh_key_path: this.settings.ssh_key_path
 				});
 
 				if (this.settings.notify) new Notice(conn);
@@ -206,7 +210,7 @@ export default class SyncFTP extends Plugin {
 						let dst_path = (rem_file.path !== rem_path) ? `${rem_file.path.replace(rem_path,'')}/`: '';
 
 						if (rem_file.type !== 'd') {
-							sync = await this.client.downloadFile(`${rem_file.path}/${rem_file.name}`, `${loc_path}${dst_path}${rem_file.name}`);
+							sync = await this.client.downloadFile(`${rem_file.path}/${rem_file.name}`, `${loc_path}/${dst_path}${rem_file.name}`);
 						} else {
 							if (!loc_list.find(folder => folder.name === rem_file.name)) {
 								if (await this.client.fileExists(`${dst_path}${rem_file.name}/`) === false) {
