@@ -206,7 +206,7 @@ export default class SyncFTP extends Plugin {
 						let dst_path = (rem_file.path !== rem_path) ? `${rem_file.path.replace(rem_path,'')}/`: '';
 
 						if (rem_file.type !== 'd') {
-							sync = await this.client.downloadFile(`${rem_file.path}/${rem_file.name}`, `${loc_path}${dst_path}${rem_file.name}`);
+							sync = await this.client.downloadFile(`${rem_file.path}/${rem_file.name}`, `${loc_path}${dst_path}/${rem_file.name}`);
 						} else {
 							if (!loc_list.find(folder => folder.name === rem_file.name)) {
 								if (await this.client.fileExists(`${dst_path}${rem_file.name}/`) === false) {
