@@ -71,12 +71,14 @@ export default class CredentialTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName('Password')
 			.setDesc('FTP Password')
-			.addText(text => text
-				.setValue(this.plugin.settings.password)
+			.addText(text => {
+				text.inputEl.type = 'password';
+				text.setValue(this.plugin.settings.password)
 				.onChange(async (value) => {
 					this.plugin.settings.password = value;
 					await this.plugin.saveSettings();
-				}));
+					})
+			});
 
 		new Setting(containerEl)
 			.setName('Vaults Path')
